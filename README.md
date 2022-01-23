@@ -14,8 +14,8 @@ Giving a target object, the model will output its possibility of status within [
 
 |                     |   F1 (%)  |  Precision (%) |  Recall (%) | 
 |:-------------------:|:---------:|:--------------:|:-----------:|
-| FastFlowNet (Kitti) |    4.16   |      11.4      |     16.2    |
-|    Raft (Kitti)     |    6.64   |      35.0      |     1.20    |
+| FastFlowNet (Kitti) |    92.2   |      92.4      |     92.3    |
+|    Raft (Kitti)     |    89.5   |      90.2      |     89.4    |
 
 Video of visualization can be found [here](). The predictions are shown in different colors:
 |                  Format           |   Prediction  |  Ground Truth |
@@ -43,7 +43,8 @@ Some preperations are needed before starting.
 - Clone the repository of FastFlowNet and/or RAFT and set them up. To create a conda environment needed for FastFlowNet, run `source env_fastflow.sh` to help.
 - Move `flowgraph_fastflow.py` and `flowgraph_raft.py` to the root directory of FastFlowNet or RAFT, like `{FILE_PATH}/FastFlowNet/`.
 - Modify the path of `config.yml` in `flowgraph_fastflow.py` and `flowgraph_raft.py`:
-&nbsp; ```python
+
+```python
 # Please modify the path of config.yml
 with open("{FILE_PATH}/config.yml") as f:
 config = yaml.load(f, Loader=yaml.FullLoader)
@@ -69,7 +70,7 @@ Find objects in frames and cut them off, followed by some preproccessing. Then f
 6. `python model_visual.py` </br>
 Visualize the prediction with the format mentioned above.
 
-7. `ffmpeg -r 5 -pattern_type glob -i '{}/*.png' -b 8000k visual.mp4 -pix_fmt yuv420p`
+7. `ffmpeg -r 5 -pattern_type glob -i '{}/*.png' -b 8000k visual.mp4 -pix_fmt yuv420p` </br>
 Generate a video.
 
 8. Enjoy! ;)
