@@ -1,0 +1,3 @@
+mkdir runs model_checkpoint visual_infer fastflow_kitti raft_kitti
+mkdir fastflow_kitti/flow_train fastflow_kitti/flow_valid fastflow_kitti/raw_with_flow_train fastflow_kitti/raw_with_flow_valid
+mkdir raft_kitti/flow_train raft_kitti/flow_valid raft_kitti/raw_with_flow_train raft_kitti/raw_with_flow_valid
