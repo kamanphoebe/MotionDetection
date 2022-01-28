@@ -10,6 +10,7 @@ echo "Installing packages..."
 conda install pytorch=0.4.1 cuda92 -c pytorch
 conda install opencv
 conda install -c conda-forge pillow
+conda install -c conda-forge pyyaml
 cd ./FastFlowNet/models/correlation_package/
 python setup.py build
 python setup.py install

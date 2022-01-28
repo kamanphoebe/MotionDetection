@@ -2,10 +2,10 @@ import json
 import random
 import yaml
 
-with open("./config.yml") as f:
+with open("./config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
-exclusion = config["exclusion"]  # Excluded scenes
+exclude_scene = config["exclude_scene"]  # Excluded scenes
 allscene_json_path = config["nuscenes_path"] + "/v1.0-trainval/scene.json"
 use_scene_path = config["use_scene_path"]
 
@@ -21,7 +21,7 @@ for scene in scenes:
     words = scene["description"].split(", ")
     words = [word.lower() for word in words]
     descriptions.update(words)
-    for ex in exclusion:
+    for ex in exclude_scene:
         if ex in words:
             flag = 1
             break

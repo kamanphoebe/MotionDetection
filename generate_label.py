@@ -11,7 +11,7 @@ from nuscenes.utils.geometry_utils import BoxVisibility
 from nuscenes.utils.geometry_utils import view_points
 import yaml
 
-with open("./config.yml") as f:
+with open("./config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 # Settings.
@@ -22,8 +22,8 @@ max_dist = config["max_dist"]
 threshold_vel = config["threshold_vel"]
 
 nuscenes_path = config["nuscenes_path"]
-flow_paths = config["flow_path_fastflowkitti_2"]
-label_paths = config["label_path_fastflowkitti_2"]
+flow_paths = config["flow_path_fastflowkitti"]
+label_paths = config["label_path_fastflowkitti"]
 
 # Compute distance between box and ego.
 def box_distance(sample_data, ann_data):
@@ -123,11 +123,9 @@ for i in range(2):
 
 
     # Outut csv file.
-    f = open(label_paths[i], 'w')
-
-    csvheaders = ["npypath", "xmin", "xmax", "ymin", "ymax", "motionFlag"]
-    writer = csv.DictWriter(f, fieldnames=csvheaders)
-    writer.writeheader()
-    writer.writerows(label_dict)
-
-    f.close()
+    with open(label_paths[i], 'w') as f:
+        csvheaders = ["npypath", "xmin", "xmax", "ymin", "ymax", "motionFlag"]
+        writer = csv.DictWriter(f, fieldnames=csvheaders)
+        writer.writeheader()
+        writer.writerows(label_dict)
+        

@@ -22,14 +22,18 @@ model = FastFlowNet().cuda().eval()
 model.load_state_dict(torch.load('./checkpoints/fastflownet_ft_kitti.pth'))
 
 # Please modify the path of config.yml
-with open("{FILE_PATH}/config.yml") as f:
+with open("{FILE_PATH}/config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 rawlst_paths = config["rawlst_path"]
+flow_path = config["flow_path_fastflowkitti"][2]
+raw_flow_path = config["raw_flow_path_fastflowkitti"][2]
+npy_path = config["npy_path_fastflowkitti"][2]
 
 
-# Iterate over all selected images to generate flow graphs, 
-# then concatenate with the original images. 
+# Iterate over all selected images to generate 
+# .npy files and flow graphs, then concatenate 
+# with the original images. 
 for i, rawlst_path in enumerate(rawlst_paths):
 
     rawlst = open(rawlst_path, 'r')
@@ -85,15 +89,15 @@ for i, rawlst_path in enumerate(rawlst_paths):
 
             flow_color = flow_to_color(flow, convert_to_bgr=True)
 
-            flow_path = config["flow_train_path_fastflowkitti"][i] + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
-            raw_flow_path = config["raw_flow_train_path_fastflowkitti"][i] + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
-            npy_path = config["flow_train_path_fastflowkitti_2"][i] + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.npy"
+            flow_path = flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
+            raw_flow_path = raw_flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
+            npy_path = npy_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.npy"
             
             cv2.imwrite(flow_path, flow_color)
             np.save(npy_path, flow)
 
-            # Concatenate the flow graph and its corresponding origianl image.
-            original = Image.open(img1_path)
+            # Concatenate the flow graph and its corresponding original image.
+            original = Image.open(img2_path)
             flow = Image.open(flow_path)
             w = original.width + flow.width
             h = original.height

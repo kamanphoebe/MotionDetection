@@ -24,9 +24,9 @@ with open("./config.yaml") as f:
 BATCH_SIZE = config["batch_size"]
 NUM_WORKERS = config["num_workers"]
 model_path = config["model_path"]
-visual_path = config["visual_path"][0]
-raw_flow_path = config["raw_flow_path_fastflowkitti"][1]
-label_path = config["label_path_fastflowkitti"]
+visual_path = config["visual_path"][1]
+raw_flow_path = config["raw_flow_path_fastflowkitti"][2]
+label_path = config["label_path_fastflowkitti"][2]
 sampling_frac = config["sampling_frac_valid"]
 
 with open(label_path) as csvf:
@@ -42,7 +42,7 @@ model = models.resnet18()
 model.conv1 = nn.Conv2d(2, 64, kernel_size=7, stride=2, padding=3, bias=False)
 in_ftrs = model.fc.in_features
 model.fc = nn.Linear(in_ftrs, out_features=1)
-model.load_state_dict(torch.load(f"{model_path}/model_fastflow.pth"))
+model.load_state_dict(torch.load(f"{model_path}/model_20220126_150320.pth"))
 model = model.to(device)
 criterion = nn.BCEWithLogitsLoss()
 
@@ -93,17 +93,17 @@ def infer():
 if __name__ == "__main__":
 
     con_results, bi_results = infer()
-    folders = ["seq_20", "seq_40", "seq_60", "seq_80", "seq_100", "seq_120"]
+    folders = ["scene_6", "scene_12", "scene_18", "scene_24", "scene_30", "scene_36"]
     fig = plt.figure(figsize=(42.5, 11.8))
 
     for i, label in enumerate(labels):
 
-        if i % 1000 == 999:
+        if i % 500 == 499:
             logging.info(f"Processed labels {i+1}/{len(labels)}")
 
         curr_imgpath = label["npypath"].replace(".npy", ".png")
         curr_imgpath = curr_imgpath.replace(
-            "flow_valid", "raw_with_flow_valid")
+            "flow_valid_expand", "raw_with_flow_valid_expand")
 
         if i == 0:
             prev_imgpath = curr_imgpath
@@ -112,9 +112,9 @@ if __name__ == "__main__":
         # then output the image.
         if curr_imgpath != prev_imgpath:
             reg = re.search(
-                rf"{raw_flow_path}/seq_([0-9]*)_img_(.+)_(.*).png", prev_imgpath)
-            imgname = "scene_{:03d}_img_{:02d}".format(int(reg.group(1)), int(reg.group(2)))
-            idx = int((int(reg.group(1)) - 1) / 20)
+                rf"{raw_flow_path}/scene_([0-9]*)_img_([0-9]*)_(.*).png", prev_imgpath)
+            imgname = "scene_{:02d}_img_{:03d}".format(int(reg.group(1)), int(reg.group(2)))
+            idx = int((int(reg.group(1)) - 1) / 6)
             plt.savefig(
                 f"{visual_path}/{folders[idx]}/{imgname}.png", bbox_inches="tight", pad_inches=0)
             plt.clf()

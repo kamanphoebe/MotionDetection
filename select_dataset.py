@@ -4,7 +4,7 @@ from nuscenes.nuscenes import NuScenes
 from nuscenes.utils.geometry_utils import BoxVisibility
 import yaml
 
-with open("./config.yml") as f:
+with open("./config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 # Settings

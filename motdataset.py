@@ -9,10 +9,11 @@ from torch.utils.data import Dataset
 import yaml
 import random
 
-with open("./config.yml") as f:
+with open("./config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 re_size = config["re_size"]
+scale_factor = config["scale_factor"]
 sampling_frac_train = tuple(config["sampling_frac_train"])
 sampling_frac_valid = tuple(config["sampling_frac_valid"])
 
@@ -67,8 +68,8 @@ class MotionDetDataset(Dataset):
                 diff = abs(diff)
                 left -= diff
                 right += diff
-            # Scale up to 1.5 times.
-            scale = (right - left) * 1.5 - (right - left) / 2
+            # Scale up to {scale_factor} times.
+            scale = (right - left) * scale_factor / 2
             top -= scale
             bottom += scale
             left -= scale

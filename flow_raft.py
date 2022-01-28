@@ -19,10 +19,13 @@ import logging
 DEVICE = 'cuda'
 
 # Please modify the path of config.yml
-with open("{FILE_PATH}/config.yml") as f:
+with open("{FILE_PATH}/config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 rawlst_paths = config["rawlst_path"]
+flow_path = config["flow_path_raftkitti"][2]
+raw_flow_path = config["raw_flow_path_raftkitti"][2]
+npy_path = config["npy_path_raftkitti"][2]
 
 logging.getLogger().setLevel(logging.INFO)
 logger_shapely = logging.getLogger("shapely")
@@ -58,7 +61,7 @@ def demo(args):
     with torch.no_grad():
 
         # Iterate over all selected images to generate 
-        # .flo files and flow graphs, then concatenate 
+        # .npy files and flow graphs, then concatenate 
         # with the original images. 
         for i, rawlst_path in enumerate(rawlst_paths):
 
@@ -84,15 +87,15 @@ def demo(args):
                     image1, image2 = padder.pad(image1, image2)
                     flow_low, flow_up = model(image1, image2, iters=20, test_mode=True)
 
-                    flow_path = config["flow_train_path_raftkitti"][i] + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
-                    raw_flow_path = config["raw_flow_train_path_raftkitti"][i] + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
-                    npy_path = config["flow_train_path_raftkitti_2"][i] + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.npy"
+                    save_flow_path = flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
+                    save_raw_flow_path = raw_flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
+                    save_npy_path = npy_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.npy"
                     
                     # 2 channels outputs.
                     flow_npy = flow_up[0].permute(1,2,0).cpu().numpy()
-                    np.save(npy_path, flow_npy)
+                    np.save(save_npy_path, flow_npy)
                     # 3 channels outputs.
-                    viz(image1, flow_up, flow_path, raw_flow_path)
+                    viz(image2, flow_up, save_flow_path, save_raw_flow_path)
                 
             rawlst.close()
 

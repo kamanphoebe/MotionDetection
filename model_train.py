@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 import torchvision.models as models
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import transforms
 from sklearn.metrics import precision_recall_fscore_support
 import yaml
 import datetime
@@ -22,10 +21,10 @@ logging.getLogger().setLevel(logging.INFO)
 logger_shapely = logging.getLogger("shapely")
 logger_shapely.setLevel(logging.ERROR)
 
-with open("./config.yml") as f:
+with open("./config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
-label_paths = config["label_path_fastflowkitti_2"]
+label_paths = config["label_path_fastflowkitti"]
 model_path = config["model_path"]
 checkpoint_path = config["checkpoint_path"]
 writer_path = config["writer_path"]
