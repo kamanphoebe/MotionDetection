@@ -1,6 +1,6 @@
 # Optical Flow Based Motion Detection for Autonomous Driving
 
-This project aims to investigate the feasibility of motion detection (especially for distant objects) in the way of supervised learning, together with optical flow. Overall, optical flow of target objects are fed into neural network as inputs, while the outputs demonstrate the confidence of the objects' status, i.e., moving or still.</br>
+This project aims to investigate the feasibility of motion detection (especially for distant objects) in the way of supervised learning, together with optical flow. Overall, optical flow of target objects are fed into neural network as inputs, while the outputs demonstrate the confidence of the objects' status, i.e., moving or still. For details, please refer to the [associated paper](Optical_Flow_Based_Motion_Detection_for_Autonomous_Driving.pdf).</br>
 
 The project is based on several open resources as listed below:</br>
 
