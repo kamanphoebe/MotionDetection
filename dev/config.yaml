@@ -1,0 +1,72 @@
+---
+  # Paths.
+  nuscenes_path: "{}"   # Please fill in the path of nuScenes dataset
+  
+  use_scene_path: "./use_scene.json"
+  rawlst_path: ["./rawlst_train.json",
+                "./rawlst_valid.json"]
+
+  flow_path_fastflowkitti: ["./fastflow_kitti/flow_train",
+                            "./fastflow_kitti/flow_valid",
+                            "./fastflow_kitti/flow_valid_expand"]
+  raw_flow_path_fastflowkitti: ["./fastflow_kitti/raw_with_flow_train",
+                                "./fastflow_kitti/raw_with_flow_valid",
+                                "./fastflow_kitti/raw_with_flow_valid_expand"]
+  npy_path_fastflowkitti: ["./fastflow_kitti/npy_train",
+                           "./fastflow_kitti/npy_valid",
+                           "./fastflow_kitti/npy_valid_expand"]
+
+  flow_path_raftkitti: ["./raft_kitti/flow_train",
+                        "./raft_kitti/flow_valid"]
+  raw_flow_path_raftkitti: ["./raft_kitti/raw_with_flow_train",
+                            "./raft_kitti/raw_with_flow_valid"]
+  npy_path_raftkitti: ["./raftkitti_kitti/npy_train",
+                       "./raftkitti_kitti/npy_valid",
+                       "./raftkitti_kitti/npy_valid_expand"]
+
+
+  label_path_fastflowkitti: ["./fastflow_kitti/label_train.csv",
+                             "./fastflow_kitti/label_valid.csv",
+                             "./fastflow_kitti/label_valid_expand.csv"]
+
+  label_path_raftkitti: ["./raft_kitti/label_train.csv",
+                         "./raft_kitti/label_valid.csv"]
+
+  writer_path: "./runs"
+  model_path: "./models"
+  checkpoint_path: "./model_checkpoint"
+  visual_path: ["./visual", ./visual_expand"]
+
+  # For demo.
+  demo_label_path: "./demo_label.csv"
+  demo_raw_path: "./demo_raw"
+  demo_visual_path: "./demo_infer"
+
+  # scene_filter.py
+  exclude_scene: ["night", "rain", "lightning"]
+
+  # select_trainset.py
+  # generate_label.py
+  sensor: "CAM_FRONT"
+  use_category: ["vehicle.car", "vehicle.emergency.ambulance", "vehicle.emergency.police",
+                 "vehicle.truck", "vehicle.bus.bendy", "vehicle.bus.rigid", "vehicle.construction"]
+  use_visibility: "v80-100"
+  scene_num_train: 550
+  min_dist: 30
+  max_dist: 70
+  threshold_vel: 2.0
+
+  # motdataset.py
+  re_size: 224
+  scale_factor: 2.0
+  sampling_frac_train: [3, 5]
+  sampling_frac_valid: [1, 2]
+
+  # model_train.py
+  num_epoch: 60
+  batch_size: 128
+  learning_rate: 0.01
+  batches_per_iter: 30
+  num_workers: 8
+  momentum: 0.9
+  weight_decay: 0.01
