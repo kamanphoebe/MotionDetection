@@ -33,7 +33,7 @@ If you would like to have a quick try about the inference and viualization, you 
 ```bash
 mkdir demo_infer
 python demo_model_visual.py 
-ffmpeg -r 2 -pattern_type glob -i './dev/demo_infer/*.png' -pix_fmt yuv420p -b 8000k demo_visual.mp4
+ffmpeg -r 2 -pattern_type glob -i './demo_infer/*.png' -pix_fmt yuv420p -b 8000k demo_visual.mp4
 ```
 
 ### Implement the complete pipeline
