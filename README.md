@@ -41,10 +41,10 @@ ffmpeg -r 2 -pattern_type glob -i './demo_infer/*.png' -pix_fmt yuv420p -b 8000k
 The procedure below helps you apply the model on your own images of a video:
 1. `sh custom_mkdir.sh`
 2. Put all of your images under `custom_demo/custom_raw` directory. The images should be named in order according to time, e.g. `001.png`, `002.png`.
-3. Generate the corresponding labels by yourself and save them into `custom_demo/custom_label.csv`. Please refer to `demo_label.csv` for the way of organizing labels. Note that `motionFlag` is actually not needed.
+3. Generate the corresponding labels by yourself and save them into `custom_demo/custom_label.csv`. Please refer to `demo_label.csv` for the way of organizing labels. Note that `motionFlag` is actually not needed here.
 4. Clone the repository of FastFlowNet and/or RAFT and set them up. To create a conda environment needed for FastFlowNet, run `source ./dev/env_fastflow.sh` to help.
 5. Move `custom_fastflow.py` and `custom_raft.py` to the root directory of FastFlowNet or RAFT, like `{FILE_PATH}/FastFlowNet/`.
-6. Run `python custom_fastflow.py --path REPO_PATH` or `python custom_raft.py --repo_path REPO_PATH`, where `REPO_PATH` means the path of MotionDectection repository, to generate the optical flow data.
+6. Run `python custom_fastflow.py --path REPO_PATH` or `python custom_raft.py --repo_path REPO_PATH  --model=models/raft-kitti.pth`, where `REPO_PATH` means the path of MotionDectection repository, to generate the optical flow data.
 7. Run `python custom_model_visual.py` for inference and visualization.
 8. Run `ffmpeg -r 2 -pattern_type glob -i './custom_demo/custom_infer/*.png' -pix_fmt yuv420p -b 8000k custom_visual.mp4` and you will get your own video!
 
