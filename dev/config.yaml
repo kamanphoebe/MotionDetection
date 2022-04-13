@@ -42,6 +42,9 @@
   demo_raw_path: "./demo_raw"
   demo_visual_path: "./demo_infer"
 
+  # For customized demo.
+  custom_path: "./custom_demo"
+
   # scene_filter.py
   exclude_scene: ["night", "rain", "lightning"]
 

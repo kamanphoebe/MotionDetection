@@ -21,7 +21,7 @@ def centralize(img1, img2):
 model = FastFlowNet().cuda().eval()
 model.load_state_dict(torch.load('./checkpoints/fastflownet_ft_kitti.pth'))
 
-# Please modify the path of config.yml
+# Please modify the path of config.yaml
 with open("{FILE_PATH}/config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -89,22 +89,22 @@ for i, rawlst_path in enumerate(rawlst_paths):
 
             flow_color = flow_to_color(flow, convert_to_bgr=True)
 
-            flow_path = flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
-            raw_flow_path = raw_flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
-            npy_path = npy_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.npy"
+            save_flow_path = flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
+            save_raw_flow_path = raw_flow_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.png"
+            save_npy_path = npy_path + f"/seq_{j+1}_img_{k+1}_{curr_img['name']}.npy"
             
-            cv2.imwrite(flow_path, flow_color)
-            np.save(npy_path, flow)
+            cv2.imwrite(save_flow_path, flow_color)
+            np.save(save_npy_path, flow)
 
             # Concatenate the flow graph and its corresponding original image.
             original = Image.open(img2_path)
-            flow = Image.open(flow_path)
+            flow = Image.open(save_flow_path)
             w = original.width + flow.width
             h = original.height
             concat = Image.new("RGB", (w, h))
             concat.paste(original, (0, 0))
             concat.paste(flow, (original.width, 0))
 
-            concat.save(raw_flow_path)
+            concat.save(save_raw_flow_path)
 
     rawlst.close()

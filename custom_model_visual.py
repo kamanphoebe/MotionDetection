@@ -13,6 +13,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import re
 import logging
+import os
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 logging.getLogger().setLevel(logging.INFO)
@@ -25,14 +26,14 @@ with open("./dev/config.yaml") as f:
 BATCH_SIZE = config["batch_size"]
 NUM_WORKERS = config["num_workers"]
 model_path = "./dev/models"
-demo_visual_path = config["demo_visual_path"]
-demo_raw_path = config["demo_raw_path"]
-demo_label_path = config["demo_label_path"]
+custom_raw_path = config["custom_path"]
+custom_visual_path = os.path.join(custom_raw_path, "custom_infer")
+custom_label_path = os.path.join(custom_raw_path, "custom_label.csv")
 
-with open(demo_label_path) as csvf:
+with open(custom_label_path) as csvf:
     labels = list(csv.DictReader(csvf))
 
-with open(demo_label_path) as csvf:
+with open(custom_label_path) as csvf:
     validset = MotionDetDataset(csvf, datatype="infer")
 
 validloader = DataLoader(
@@ -46,6 +47,9 @@ model.load_state_dict(torch.load(f"{model_path}/model_fastflow_kitti.pth"))
 model = model.to(device)
 criterion = nn.BCEWithLogitsLoss()
 
+
+def sort_labels(box):
+    return box.get("npypath")
 
 # Inference using the loaded model.
 # Return a list containing all outputs.
@@ -94,12 +98,13 @@ if __name__ == "__main__":
 
     con_results, bi_results = infer()
     fig = plt.figure(figsize=(42.5, 11.8))
+    labels.sort(key=sort_labels)
 
     for i, label in enumerate(labels):
 
         curr_imgpath = label["npypath"].replace(".npy", ".png")
         curr_imgpath = curr_imgpath.replace(
-            "demo_npy", "demo_raw_flow")
+            "custom_npy", "custom_raw_flow")
 
         if i == 0:
             prev_imgpath = curr_imgpath
@@ -107,12 +112,8 @@ if __name__ == "__main__":
         # If all boxes in current image have already rendered,
         # then output the image.
         if curr_imgpath != prev_imgpath:
-            reg = re.search(rf"{demo_raw_path}/(.+).png", prev_imgpath)
-            imgname = reg.group(1)
-            reg = re.search(r"seq_([0-9]*)_img_(.+)_(.+)", imgname)
-            imgname = int(reg.group(2))
-            plt.savefig(
-                "{}/{:02d}.png".format(demo_visual_path, imgname), bbox_inches="tight", pad_inches=0)
+            save_path = os.path.join(custom_visual_path, os.path.basename(curr_imgpath))
+            plt.savefig(save_path, bbox_inches="tight", pad_inches=0)
             plt.clf()
 
         img = Image.open(curr_imgpath)

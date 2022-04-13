@@ -13,12 +13,11 @@ from utils.utils import InputPadder
 
 import json
 import yaml
-import logging
 
 
 DEVICE = 'cuda'
 
-# Please modify the path of config.yml
+# Please modify the path of config.yaml
 with open("{FILE_PATH}/config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -27,9 +26,6 @@ flow_path = config["flow_path_raftkitti"][2]
 raw_flow_path = config["raw_flow_path_raftkitti"][2]
 npy_path = config["npy_path_raftkitti"][2]
 
-logging.getLogger().setLevel(logging.INFO)
-logger_shapely = logging.getLogger("shapely")
-logger_shapely.setLevel(logging.ERROR)
 
 def load_image(imfile):
     img = np.array(Image.open(imfile)).astype(np.uint8)
@@ -69,10 +65,6 @@ def demo(args):
             seqlst = json.load(rawlst)
             
             for j, seq in enumerate(seqlst):
-                
-                # Use for preventing job hanging in bifrost.
-                if j % 10 == 9:
-                    logging.info(f"Finished seq {j}")
 
                 # Iterate over all selected sequential images.
                 for k, curr_img in enumerate(seq[:-1]):

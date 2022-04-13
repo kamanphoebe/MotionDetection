@@ -1,0 +1,1 @@
+mkdir -p custom_demo/custom_raw custom_demo/custom_flow custom_demo/custom_raw_flow custom_demo/custom_npy custom_demo/custom_infer

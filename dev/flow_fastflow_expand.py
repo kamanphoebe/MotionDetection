@@ -22,7 +22,7 @@ def centralize(img1, img2):
 model = FastFlowNet().cuda().eval()
 model.load_state_dict(torch.load('./checkpoints/fastflownet_ft_kitti.pth'))
 
-# Please modify the path of config.yml
+# Please modify the path of config.yaml
 with open("{FILE_PATH}/config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 

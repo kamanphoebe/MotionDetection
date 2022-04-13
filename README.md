@@ -4,7 +4,7 @@ This project aims to investigate the feasibility of motion detection (especially
 
 The project is based on several open resources as listed below:</br>
 
-- Dataset: [Nuscenes](https://github.com/nutonomy/nuscenes-devkit)
+- Dataset: [nuScenes](https://github.com/nutonomy/nuscenes-devkit)
 - Optical flow algorithms: [FastFlowNet](https://github.com/ltkong218/FastFlowNet), [Raft](https://github.com/princeton-vl/RAFT)
 - Model: [ResNet18](https://arxiv.org/abs/1512.03385)
 
@@ -29,17 +29,30 @@ The code has been tested with Python 3.8, PyTorch 1.6 and Cuda 10.2.
 
 ### Demo
 
-If you would like to have a quick try about the inference and viualization, you can simply run following commands to generate a `demo_visual.mp4`:
+If you would like to have a quick try about the inference and viualization with nuScenes dataset, you can simply run following commands to generate a `demo_visual.mp4`:
 ```bash
 mkdir demo_infer
 python demo_model_visual.py 
 ffmpeg -r 2 -pattern_type glob -i './demo_infer/*.png' -pix_fmt yuv420p -b 8000k demo_visual.mp4
 ```
 
+### Customized demo
+
+The procedure below helps you apply the model on your own images of a video:
+1. `sh custom_mkdir.sh`
+2. Put all of your images under `custom_demo/custom_raw` directory. The images should be named in order according to time, e.g. `001.png`, `002.png`.
+3. Generate the corresponding labels by yourself and save them into `custom_demo/custom_label.csv`. Please refer to `demo_label.csv` for the way of organizing labels. Note that `motionFlag` is actually not needed.
+4. Clone the repository of FastFlowNet and/or RAFT and set them up. To create a conda environment needed for FastFlowNet, run `source ./dev/env_fastflow.sh` to help.
+5. Move `custom_fastflow.py` and `custom_raft.py` to the root directory of FastFlowNet or RAFT, like `{FILE_PATH}/FastFlowNet/`.
+6. Run `python custom_fastflow.py --path REPO_PATH` or `python custom_raft.py --repo_path REPO_PATH`, where `REPO_PATH` means the path of MotionDectection repository, to generate the optical flow data.
+7. Run `python custom_model_visual.py` for inference and visualization.
+8. Run `ffmpeg -r 2 -pattern_type glob -i './custom_demo/custom_infer/*.png' -pix_fmt yuv420p -b 8000k custom_visual.mp4` and you will get your own video!
+
+
 ### Implement the complete pipeline
 
 Some preperations are needed before starting.
-- `cd dev`
+- `cd dev ; sh mkdir.sh`
 - Download nuScenes dataset and install nuscenes-devkit.
 - Clone the repository of FastFlowNet and/or RAFT and set them up. To create a conda environment needed for FastFlowNet, run `source env_fastflow.sh` to help.
 - Move `flow_fastflow.py` and `flow_raft.py` to the root directory of FastFlowNet or RAFT, like `{FILE_PATH}/FastFlowNet/`.
@@ -53,13 +66,13 @@ with open("{FILE_PATH}/config.yaml") as f:
 Now you are ready to go!
 
 1. `python scene_filter.py`</br>
-Select target scenes from Nuscenes and save their tokens into `use_scene.json`.
+Select target scenes from nuScenes and save their tokens into `use_scene.json`.
 
 2. `python select_dataset.py`</br>
 Iterate over selected scenes to find frame pairs that contain target obj(s) and save their paths and tokens into `rawlst_train.json` or `rawlst_valid.json`.
 
 3. `python flow_fastflow.py` or `python flow_raft.py --model=models/raft-kitti.pth` </br>
-Generate optical flow graphs of selected raw images. Note that the scripts are by default set to use FastFlowNet, so please replace the word "fastflow" with "raft" in the scripts of the following steps if you would like to use RAFT instead.
+Generate optical flow graphs of selected raw images. Note that the scripts are by default set to use FastFlowNet, so please replace the word "fastflow" with "raft" for the scripts in the following steps if you would like to use RAFT instead.
 
 4. `python generate_label.py` </br>
 Estimate the velocity of an object using two frames and label it as 1(moving) or 0(still). All labels information are then saved into `label_train.csv` and `label_valid.csv`.
