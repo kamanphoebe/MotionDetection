@@ -29,7 +29,7 @@ The code has been tested with Python 3.8, PyTorch 1.6 and Cuda 10.2.
 
 ### Demo
 
-If you would like to have a quick try about the inference and viualization with nuScenes dataset, you can simply run following commands to generate a `demo_visual.mp4`:
+If you would like to have a quick try about the inference and visualization with nuScenes dataset, you can simply run the following commands to generate a `demo_visual.mp4`:
 ```bash
 mkdir demo_infer
 python demo_model_visual.py 
@@ -38,7 +38,7 @@ ffmpeg -r 2 -pattern_type glob -i './demo_infer/*.png' -pix_fmt yuv420p -b 8000k
 
 ### Customized demo
 
-The procedure below helps you apply the model on your own images of a video:
+The procedure below helps you apply our model on your **own** images of a video:
 1. `sh custom_mkdir.sh`
 2. Put all of your images under `custom_demo/custom_raw` directory. The images should be named in order according to time, e.g. `001.png`, `002.png`.
 3. Generate the corresponding labels by yourself and save them into `custom_demo/custom_label.csv`. Please refer to `demo_label.csv` for the way of organizing labels. Note that `motionFlag` is actually not needed here.
