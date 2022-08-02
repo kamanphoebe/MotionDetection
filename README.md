@@ -56,7 +56,7 @@ Some preperations are needed before starting.
 - Download nuScenes dataset and install nuscenes-devkit.
 - Clone the repository of FastFlowNet and/or RAFT and set them up. To create a conda environment needed for FastFlowNet, run `source env_fastflow.sh` to help.
 - Move `flow_fastflow.py` and `flow_raft.py` to the root directory of FastFlowNet or RAFT, like `{FILE_PATH}/FastFlowNet/`.
-- Follow the instructions to complete `config.yaml`. Also, modify the path of `config.yaml` in `flowgraph_fastflow.py` and `flowgraph_raft.py`:
+- Follow the instructions to complete `config.yaml`. Also, modify the path of `config.yaml` in `flow_fastflow.py` and `flow_raft.py`:
 ```python
 # Please modify the path of config.yaml
 with open("{FILE_PATH}/config.yaml") as f:
@@ -84,7 +84,7 @@ Find objects in frames and cut them out, followed by some preproccessing. Then f
 Visualize the prediction with the format mentioned above.
 
 7. `ffmpeg -r 2 -pattern_type glob -i 'visual/seq_20/*.png' -pix_fmt yuv420p -b 8000k visual.mp4`
-Generate a video. Now you successfully obtain a video, but in a simpler form which only contains keyframes. To generate a complete video that includes non-keyframes and also near objects, there are several more steps:
+Generate a video. Now you successfully obtain a video, but in a simpler form which only contains keyframes. To generate a complete video that includes non-keyframes and also nearby objects, there are several more steps:
 ```shell
 mv flow_fastflow_expand.py {FILE_PATH}/FastFlowNet/
 python {FILE_PATH}/FastFlowNet/flow_fastflow_expand.py
